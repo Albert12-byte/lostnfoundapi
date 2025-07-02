@@ -2,6 +2,7 @@
 
 Database models.
 """
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser,
@@ -43,3 +44,20 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+
+class Item(models.Model):
+    """Item Object"""
+    user = models.ForeignKey(
+            settings.AUTH_USER_MODEL,
+            on_delete= models.CASCADE,
+        )
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    status = models.CharField(max_length=10, default='lost')
+    category = models.CharField(max_length=20)
+    location_last_seen = models.CharField(max_length=255)
+    date_lost = models.DateField()
+
+    def __str__(self):
+        return self.title
