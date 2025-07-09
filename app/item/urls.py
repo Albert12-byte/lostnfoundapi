@@ -13,6 +13,8 @@ from item import views
 
 router = DefaultRouter()
 router.register('items',views.ItemViewSet)
+router.register('tags', views.TagViewSet)
+router.register('claims', views.ClaimsViewSet, basename='claims')
 
 app_name = 'item'
 
