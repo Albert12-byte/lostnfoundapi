@@ -37,7 +37,7 @@ class PublicUserApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         user = get_user_model().objects.get(email=payload['email'])
         self.assertTrue(user.check_password(payload['password']))
-        self.assertNotIn( 'password', res.data)
+        self.assertNotIn('password', res.data)
 
     def test_user_with_email_exists_error(self):
         """Test error returned if user with email exists."""
@@ -53,9 +53,9 @@ class PublicUserApiTests(TestCase):
 
     def test_password_too_short(self):
         """Test an error is returned if password is less than 5 characters"""
-        payload ={
+        payload = {
             'email': 'test@example.com',
-            'password':'pw',
+            'password': 'pw',
             'name': 'Test name',
         }
         res = self.client.post(CREATE_USER_URL, payload)
@@ -71,7 +71,7 @@ class PublicUserApiTests(TestCase):
         user_details = {
             'name': 'Test Name',
             'email': 'test@example.com',
-            'password':'test-user-password123',
+            'password': 'test-user-password123',
         }
         create_user(**user_details)
 
@@ -88,7 +88,7 @@ class PublicUserApiTests(TestCase):
         """Test if returns error if credentials invalid"""
         create_user(email='test@example.com', password='goodpass')
 
-        payload = {'email':'test@example.com', 'password':'badpass'}
+        payload = {'email': 'test@example.com', 'password': 'badpass'}
         res = self.client.post(TOKEN_URL, payload)
 
         self.assertNotIn('token', res.data)
@@ -96,7 +96,7 @@ class PublicUserApiTests(TestCase):
 
     def test_create_token_blank_password(self):
         """TEst posting a blank password returns an error"""
-        payload = { 'email':'test@example.com', 'password':''}
+        payload = {'email': 'test@example.com', 'password': ''}
         res = self.client.post(TOKEN_URL, payload)
 
         self.assertNotIn('token', res.data)

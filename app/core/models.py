@@ -13,13 +13,13 @@ from django.contrib.auth.models import (
     PermissionsMixin,
 )
 
+
 def item_image_file_path(instance, filename):
     """Generate file path for new item image"""
     ext = os.path.splitext(filename)[1]
     filename = f'{uuid.uuid4()}{ext}'
 
     return os.path.join('uploads', 'item', filename)
-
 
 
 class UserManager(BaseUserManager):
@@ -61,7 +61,7 @@ class Item(models.Model):
     """Item Object"""
     user = models.ForeignKey(
             settings.AUTH_USER_MODEL,
-            on_delete= models.CASCADE,
+            on_delete=models.CASCADE,
         )
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
@@ -91,9 +91,9 @@ class Tag(models.Model):
 class Claims(models.Model):
     """Claims for items"""
     CLAIM_STATUS_CHOICES = [
-        ('pending','Pending'),
-        ('approved','Approved'),
-        ('rejected','Rejected'),
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
     ]
     item = models.ForeignKey(Item,on_delete=models.CASCADE)
     user = models.ForeignKey(
@@ -104,4 +104,3 @@ class Claims(models.Model):
 
     def __str__(self):
         return str(self.item)
-

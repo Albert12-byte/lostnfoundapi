@@ -25,6 +25,7 @@ from core.models import (
     Claims,
 )
 from item import serializers
+
 def match_claim_to_item(claim,items):
     """Match claim to item based on description"""
     best_match = None
@@ -50,6 +51,8 @@ def match_claim_to_item(claim,items):
         ]
     )
 )
+
+
 class ItemViewSet(viewsets.ModelViewSet):
     """View for manage recipe APIs"""
     serializer_class = serializers.ItemDetailSerializer
@@ -108,9 +111,11 @@ class ItemViewSet(viewsets.ModelViewSet):
         ]
     )
 )
+
+
 class BasicItemAPIAttrViewSet(
-    mixins.DestroyModelMixin,mixins.UpdateModelMixin,
-    mixins.ListModelMixin,viewsets.GenericViewSet):
+            mixins.DestroyModelMixin,mixins.UpdateModelMixin,
+            mixins.ListModelMixin,viewsets.GenericViewSet):
     """Base viewset for item attributes"""
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -136,6 +141,7 @@ class TagViewSet(BasicItemAPIAttrViewSet):
 
 
 class IsOwnerOrAdmin(permissions.BasePermission):
+
     def has_object_permission(self, request, view, obj):
         if request.user.is_staff:
             return True
@@ -166,5 +172,3 @@ class ClaimsViewSet(BasicItemAPIAttrViewSet, mixins.CreateModelMixin):
                 return [permissions.IsAdminUser()]
             return [permissions.IsAuthenticated(), IsOwnerOrAdmin()]
         return super().get_permissions()
-
-

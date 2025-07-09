@@ -10,21 +10,23 @@ from core.models import (
     Claims,
 )
 
+
 class TagSerializer(serializers.ModelSerializer):
     """Serializer for tags."""
 
     class Meta:
         model = Tag
-        fields = [ 'id', 'name']
+        fields = ['id', 'name']
         read_only_fields = ['id']
 
 
 class ItemSerializer(serializers.ModelSerializer):
     """Serializer for items"""
     tags = TagSerializer(many=True, required=False)
+
     class Meta:
         model = Item
-        fields = [ 'id', 'title', 'description', 'status', 'category', 'location_last_seen', 'date_lost', 'tags']
+        fields = ['id', 'title', 'description', 'status', 'category', 'location_last_seen', 'date_lost', 'tags']
         read_only_fields = ['id']
 
     def _get_or_create_tags(self, tags, item):
@@ -69,8 +71,9 @@ class ItemDetailSerializer(ItemSerializer):
 class ClaimsSerializer(serializers.ModelSerializer):
     item = serializers.SlugRelatedField(
         queryset=Item.objects.all(),
-        slug_field='title'
+        slug_field = 'title'
     )
+
     class Meta:
         model = Claims
         fields = ['id','item', 'user', 'status','description' ]
@@ -84,5 +87,4 @@ class ItemImageSerializer(serializers.ModelSerializer):
         model = Item
         fields = ['id','image']
         read_only_fields = ['id']
-        extra_kwargs = {'image': {'required':'True'}}
-
+        extra_kwargs = {'image': {'required': 'True'}}

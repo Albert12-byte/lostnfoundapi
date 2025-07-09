@@ -29,13 +29,16 @@ from item.serializers import(
 
 ITEMS_URL = reverse('item:item-list')
 
+
 def image_upload_url(item_id):
     """Create and return an image upload URL """
     return reverse('item:item-upload-image', args=[item_id])
 
+
 def detail_url(item_id):
     """Create and Return a item detail URL"""
     return reverse('item:item-detail', args=[item_id])
+
 
 def create_item(user, **params):
     """Create and return a sample recipe."""
@@ -52,9 +55,11 @@ def create_item(user, **params):
     item = Item.objects.create(user=user, **defaults)
     return item
 
+
 def create_user(**params):
     """Create and return a new user"""
     return get_user_model().objects.create_user(**params)
+
 
 class PublicItemAPITests(TestCase):
     """Test unauthenticated API requests."""
@@ -74,7 +79,7 @@ class PrivateItemAPITests(TestCase):
 
     def setUp(self):
         self.client = APIClient()
-        self.user = create_user(email='user@example.com', password= 'test123')
+        self.user = create_user(email='user@example.com', password='test123')
         self.client.force_authenticate(self.user)
 
     def test_retrieve_items(self):
@@ -89,9 +94,10 @@ class PrivateItemAPITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
+
     def test_item_list_limited_to_user(self):
         """Test list of recipies is limited to authenticated user"""
-        other_user = create_user(email="other@example.com", password= 'test123')
+        other_user = create_user(email="other@example.com", password='test123')
         create_item(user=other_user)
         create_item(user=self.user)
 
@@ -101,6 +107,7 @@ class PrivateItemAPITests(TestCase):
         serializer = ItemSerializer(items, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
+
 
     def test_get_item_detail(self):
         """Test get Item detail"""
@@ -133,13 +140,13 @@ class PrivateItemAPITests(TestCase):
     def test_partial_update_status(self):
         """Test partial update of an item's status"""
         item = create_item(
-        user=self.user,
-        title='Lost Item',
-        description='A lost airpod',
-        status='lost',
-        category='electronics',
-        location_last_seen= 'Around G block',
-        date_lost=date.today()
+            user=self.user,
+            title='Lost Item',
+            description='A lost airpod',
+            status='lost',
+            category='electronics',
+            location_last_seen= 'Around G block',
+            date_lost=date.today()
         )
 
         payload = {'status': 'found'}
@@ -155,13 +162,13 @@ class PrivateItemAPITests(TestCase):
     def test_full_update(self):
         """test full update of recipe"""
         item = create_item(
-        user=self.user,
-        title='Lost Item',
-        description='A lost airpod',
-        status='lost',
-        category='electronics',
-        location_last_seen= 'Around G block',
-        date_lost=date.today()
+            user=self.user,
+            title='Lost Item',
+            description='A lost airpod',
+            status='lost',
+            category='electronics',
+            location_last_seen= 'Around G block',
+            date_lost=date.today()
         )
 
         payload ={

@@ -23,6 +23,7 @@ def detail_url(tag_id):
     """Create and return a tag detail url"""
     return reverse('item:tag-detail',args=[tag_id])
 
+
 def create_user(email='user@example.com', password='testpass123'):
     """Create and return a user"""
     return get_user_model().objects.create_user(email=email, password=password)
@@ -76,9 +77,9 @@ class PrivateApiTests(TestCase):
 
     def test_update_tag(self):
         """Test updating a tag"""
-        tag = Tag.objects.create(user=self.user, name = 'Wallet')
+        tag = Tag.objects.create(user=self.user, name='Wallet')
 
-        payload = {'name':'Phones'}
+        payload = {'name': 'Phones'}
         url = detail_url(tag.id)
         res = self.client.patch(url, payload)
 
@@ -88,7 +89,7 @@ class PrivateApiTests(TestCase):
 
     def test_delete_tag(self):
         """test deleting a tag"""
-        tag = Tag.objects.create(user=self.user, name= 'Scarf')
+        tag = Tag.objects.create(user=self.user, name='Scarf')
 
         url = detail_url(tag.id)
         res = self.client.delete(url)
@@ -102,12 +103,12 @@ class PrivateApiTests(TestCase):
         tag1=Tag.objects.create(user=self.user, name='Ring')
         tag2=Tag.objects.create(user=self.user, name='Stanley cup')
         item = Item.objects.create(
-            title= 'missing earbuds',
+            title='missing earbuds',
             description='lost earbuds',
-            status= 'found',
-            category= 'electronics',
-            location_last_seen= 'Around C block',
-            date_lost= date.today(),
+            status='found',
+            category='electronics',
+            location_last_seen='Around C block',
+            date_lost=date.today(),
             user=self.user,
         )
         item.tags.add(tag1)
@@ -124,26 +125,26 @@ class PrivateApiTests(TestCase):
         tag = Tag.objects.create(user=self.user, name='Accessories')
         Tag.objects.create(user=self.user, name='Samsung')
         item1 = Item.objects.create(
-            title= 'missing earbuds',
+            title='missing earbuds',
             description='lost earbuds',
-            status= 'found',
-            category= 'electronics',
-            location_last_seen= 'Around C block',
-            date_lost= date.today(),
+            status='found',
+            category='electronics',
+            location_last_seen='Around C block',
+            date_lost=date.today(),
             user=self.user,
         )
         item2=Item.objects.create(
-             title= 'Samsung S25',
+            title='Samsung S25',
             description='lost samsung phone',
-            status= 'lost',
-            category= 'electronics',
-            location_last_seen= 'Around Bush Canteen',
+            status='lost',
+            category='electronics',
+            location_last_seen='Around Bush Canteen',
             date_lost= date.today(),
             user=self.user,
         )
         item1.tags.add(tag)
         item2.tags.add(tag)
 
-        res = self.client.get(TAGS_URL,{'assigned_only': 1})
+        res = self.client.get(TAGS_URL, {'assigned_only': 1})
 
         self.assertEqual(len(res.data), 1)
